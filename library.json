@@ -1,0 +1,12 @@
+{
+    "name": "LineFormat",
+    "version": "0.1.0",
+    "keywords": "lineformat, influxdb",
+    "description": "WiFi Manager for the ESP32 and ESP8266 Arduino environments", 
+    "authors": [
+        { "name": "supakeen", "url": "https://supakeen.com/" }
+    ],
+    "repository": { "type": "git", "url": "https://github.com/supakeen/LineFormat" },
+    "frameworks": "arduino",
+    "platforms": "*"
+}
