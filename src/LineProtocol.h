@@ -2,9 +2,9 @@
 
 #ifdef __cplusplus
 
-#include "LineFormat.hpp"
+#include "LineProtocol.hpp"
 
-using namespace LineFormat;
+using namespace LineProtocol;
 
 #else
 
