@@ -30,6 +30,11 @@ namespace LineProtocol {
     String line_protocol_format(struct line_protocol *lp) {
         String formatted = "";
         formatted += lp->measurement;
+        formatted += ",room=";
+        formatted += lp->room;
+        formatted += " ";
+        formatted += " value=";
+        formatted += lp->value;
         return formatted;
     }
 
