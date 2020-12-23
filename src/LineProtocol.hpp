@@ -37,7 +37,7 @@ namespace LineProtocol {
 
         for(size_t i = 0; i < strlen(data); i++) {
             if(!have_measurement) {
-                if(data[i] != ' ') {
+                if(data[i] != ' ' && data[i] != ',') {
                     lp.measurement[index_measurement] = data[i];
                     index_measurement++;
                     continue;

@@ -32,3 +32,17 @@ TEST_CASE("line_protocol_parse_1") {
     CHECK(result == 0);
     CHECK(strcmp("test", lp.measurement) == 0);
 }
+
+TEST_CASE("line_protocol_parse_2") {
+    struct line_protocol lp;
+    int result; 
+
+    memset(&lp, '\0', sizeof(struct line_protocol));
+    
+    result = line_protocol_parse(lp, "test,bar=foo foo=bar");
+
+    printf("%d %s\n", result, lp.measurement);
+
+    CHECK(result == 0);
+    CHECK(strcmp("test", lp.measurement) == 0);
+}
