@@ -1,8 +1,9 @@
 #pragma once
 
 #include <string.h>
-
 #include <Arduino.h>
+
+#include <map>
 
 String getValue(String data, char separator, int index)
 {
@@ -23,8 +24,9 @@ String getValue(String data, char separator, int index)
 namespace LineProtocol {
     struct line_protocol {
         String measurement;
-        String room;
-        String value;
+        std::map<String, String> tags;
+        std::map<String, String> fields;
+        unsigned long long timestamp;
     };
 
     String line_protocol_format(struct line_protocol *lp) {
@@ -41,12 +43,54 @@ namespace LineProtocol {
     struct line_protocol line_protocol_parse(String &data) {
         struct line_protocol lp;
 
-        String metas = getValue(data, ' ', 0);
-        String field = getValue(data, ' ', 1);
+        bool have_measurement = false;
+        bool have_tags = false;
+        bool have_fields = false;
+        bool have_timestamp = false;
 
-        lp.measurement = getValue(metas, ',', 0);
-        lp.room = getValue(getValue(metas, ',', 1), '=', 1);
-        lp.value = getValue(field, '=', 1);
+        for(String::size_type i = 0; i < data.length(); i++) {
+            if(!have_measurement) {
+                if(data[i] != ' ') {
+                    lp.measurement.append(data[i]);
+                    continue;
+                } else {
+                    have_measurement = true;
+                    continue;
+                }
+            }
+
+            if(!have_tags) {
+                if(data[i] != ' ') {
+                    lp.measurement.append(data[i]);
+                    continue;
+                } else {
+                    have_measurement = true;
+                    continue;
+                }
+            }
+
+            if(!have_fields) {
+                if(data[i] != ' ') {
+                    lp.measurement.append(data[i]);
+                    continue;
+                } else {
+                    have_measurement = true;
+                    continue;
+                }
+            }
+
+            if(!have_timestamp) {
+                if(data[i] != ' ') {
+                    lp.measurement.append(data[i]);
+                    continue;
+                } else {
+                    have_measurement = true;
+                    continue;
+                }
+
+            }
+
+        }
 
         return lp;
     }
