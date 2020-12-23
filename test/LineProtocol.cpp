@@ -36,3 +36,21 @@ TEST_CASE("line_protocol_parse_2") {
     CHECK("foo" == lp.tags["bar"]);
     CHECK("bar" == lp.fields["foo"]);
 }
+
+TEST_CASE("line_protocol_parse_3") {
+    struct line_protocol lp;
+    int result; 
+
+    result = line_protocol_parse(lp, "test,bar= foo foo=bar");
+
+    CHECK(result == -1);
+}
+
+TEST_CASE("line_protocol_parse_4") {
+    struct line_protocol lp;
+    int result; 
+
+    result = line_protocol_parse(lp, "test,bar=foo fo o=bar");
+
+    CHECK(result == -1);
+}
