@@ -16,7 +16,7 @@ The InfluxDB Line Protocol looks like this:
 
 You can parse some data into a `struct line_protocol` like so:
 
-```c++
+```cpp
 #include <LineProtocol.h>
 
 struct line_protocol lp;
