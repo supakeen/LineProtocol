@@ -31,3 +31,17 @@ if(line_protocol_parse(&lp, "measurement,key=value key=value")) {
 ### Formatting
 
 To be documented.
+
+### The struct
+
+`LineProtocol` uses the `struct line_protocol`, its layout is as follows:
+
+```cpp
+struct line_protocol {
+    string measurement;
+    map<string, string> tags;
+    map<string, string> fields;
+    unsigned long long timestamp;
+};
+
+```
