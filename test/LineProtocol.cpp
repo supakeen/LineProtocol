@@ -34,4 +34,5 @@ TEST_CASE("line_protocol_parse_2") {
     CHECK(result == 0);
     CHECK("test" == lp.measurement);
     CHECK("foo" == lp.tags["bar"]);
+    CHECK("bar" == lp.fields["foo"]);
 }

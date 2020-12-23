@@ -35,7 +35,7 @@ namespace LineProtocol {
     void line_protocol_format(struct line_protocol *lp) {
     }
 
-    int line_protocol_parse(struct line_protocol &lp, char const *data) {
+    int line_protocol_parse(struct line_protocol &lp, string data) {
         bool have_tags = false;
         bool have_fields = false;
         bool have_timestamp = false;
@@ -49,10 +49,16 @@ namespace LineProtocol {
         bool have_sep0 = false;
         bool have_sep1 = false;
 
+        bool at_end = false;
+
         string key;
         string val;
 
-        for(size_t i = 0; i < strlen(data); i++) {
+        for(size_t i = 0; i < data.length(); i++) {
+            if(i+1 == data.length()) {
+                at_end = true;
+            }
+
             if(!in_escape) {
                if(data[i] == '\\') {
                    in_escape = true;
@@ -97,7 +103,7 @@ namespace LineProtocol {
                 }
 
                 if(substate == SUBPARSE_KEY) {
-                    if(have_sep0 || have_sep1) {
+                    if(have_sep0 || have_sep1 || at_end) {
                         return -1;
                     }
 
@@ -111,7 +117,11 @@ namespace LineProtocol {
                 }
 
                 if(substate == SUBPARSE_VAL) {
-                    if(have_sep0 || have_sep1) {
+                    if(have_sep0 || have_sep1 || at_end) {
+                        if(at_end) {
+                            val.push_back(data[i]);
+                        }
+
                         lp.tags[key] = val;
 
                         key.clear();
@@ -121,6 +131,10 @@ namespace LineProtocol {
 
                         if(have_sep1) {
                             state = PARSE_FIELDS;
+                        }
+
+                        if(at_end) {
+                            state = PARSE_END;
                         }
 
                         continue;
@@ -133,9 +147,45 @@ namespace LineProtocol {
 
             if(state == PARSE_FIELDS) {
                 if(substate == SUBPARSE_KEY) {
+                    if(have_sep0 || have_sep1 || at_end) {
+                        return -1;
+                    }
+
+                    if(data[i] == '=') {
+                        substate = SUBPARSE_VAL;
+                        continue;
+                    }
+
+                    key.push_back(data[i]);
+                    continue;
                 }
 
                 if(substate == SUBPARSE_VAL) {
+                    if(have_sep0 || have_sep1 || at_end) {
+                        if(at_end) {
+                            val.push_back(data[i]);
+                        }
+
+                        lp.fields[key] = val;
+
+                        key.clear();
+                        val.clear();
+
+                        substate = SUBPARSE_KEY;
+
+                        if(have_sep1) {
+                            state = PARSE_TIMESTAMP;
+                        }
+
+                        if(at_end) {
+                            state = PARSE_END;
+                        }
+
+                        continue;
+                    }
+
+                    val.push_back(data[i]);
+                    continue;
                 }
             }
 
@@ -143,10 +193,6 @@ namespace LineProtocol {
             }
 
             state = PARSE_END;
-        }
-
-        if(state != PARSE_END) {
-            return -1;
         }
 
         return 0;
