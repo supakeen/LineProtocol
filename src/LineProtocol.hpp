@@ -1,57 +1,45 @@
 #pragma once
 
+#include <stdlib.h>
 #include <string.h>
-#include <Arduino.h>
 
 #include <map>
+#include <string>
 
-String getValue(String data, char separator, int index)
-{
-    int found = 0;
-    int strIndex[] = { 0, -1 };
-    int maxIndex = data.length() - 1;
-
-    for (int i = 0; i <= maxIndex && found <= index; i++) {
-        if (data.charAt(i) == separator || i == maxIndex) {
-            found++;
-            strIndex[0] = strIndex[1] + 1;
-            strIndex[1] = (i == maxIndex) ? i+1 : i;
-        }
-    }
-    return found > index ? data.substring(strIndex[0], strIndex[1]) : "";
-}
+using namespace std;
 
 namespace LineProtocol {
     struct line_protocol {
-        String measurement;
-        std::map<String, String> tags;
-        std::map<String, String> fields;
+        char measurement[64];
+        map<string, string> tags;
+        map<string, string> fields;
         unsigned long long timestamp;
     };
 
-    String line_protocol_format(struct line_protocol *lp) {
-        String formatted = "";
+    string line_protocol_format(struct line_protocol *lp) {
+        string formatted = "";
         formatted += lp->measurement;
         formatted += ",room=";
-        formatted += lp->room;
+        formatted += lp->tags["room"];
         formatted += " ";
         formatted += " value=";
-        formatted += lp->value;
+        formatted += lp->fields["value"];
         return formatted;
     }
 
-    struct line_protocol line_protocol_parse(String &data) {
-        struct line_protocol lp;
-
+    int line_protocol_parse(struct line_protocol &lp, char const *data) {
         bool have_measurement = false;
+        size_t index_measurement = 0;
+
         bool have_tags = false;
         bool have_fields = false;
         bool have_timestamp = false;
 
-        for(String::size_type i = 0; i < data.length(); i++) {
+        for(size_t i = 0; i < strlen(data); i++) {
             if(!have_measurement) {
                 if(data[i] != ' ') {
-                    lp.measurement.append(data[i]);
+                    lp.measurement[index_measurement] = data[i];
+                    index_measurement++;
                     continue;
                 } else {
                     have_measurement = true;
@@ -60,38 +48,16 @@ namespace LineProtocol {
             }
 
             if(!have_tags) {
-                if(data[i] != ' ') {
-                    lp.measurement.append(data[i]);
-                    continue;
-                } else {
-                    have_measurement = true;
-                    continue;
-                }
             }
 
             if(!have_fields) {
-                if(data[i] != ' ') {
-                    lp.measurement.append(data[i]);
-                    continue;
-                } else {
-                    have_measurement = true;
-                    continue;
-                }
             }
 
             if(!have_timestamp) {
-                if(data[i] != ' ') {
-                    lp.measurement.append(data[i]);
-                    continue;
-                } else {
-                    have_measurement = true;
-                    continue;
-                }
-
             }
 
         }
 
-        return lp;
+        return 0;
     }
 }
