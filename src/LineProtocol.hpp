@@ -41,7 +41,8 @@ namespace LineProtocol {
         SUBPARSE_END = 3,
     };
 
-    void line_protocol_format(struct line_protocol *lp) {
+    int line_protocol_format(struct line_protocol *lp, string& data) {
+        return 0;
     }
 
     int line_protocol_parse(struct line_protocol &lp, string data) {
