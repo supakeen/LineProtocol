@@ -1,3 +1,11 @@
+/* This is a small header-only Arduino/C++ library to format or parse data in
+ * the [InfluxDB Line Protocol](https://docs.influxdata.com/influxdb/v2.0/reference/syntax/line-protocol/).
+ *
+ * The InfluxDB Line Protocol looks like this:
+ * ```
+ * <measurement>[,<tag_key>=<tag_value>[,<tag_key>=<tag_value>]] <field_key>=<field_value>[,<field_key>=<field_value>] [<timestamp>]
+ * ``` */
+
 #pragma once
 
 #include <stdlib.h>
@@ -23,6 +31,7 @@ namespace LineProtocol {
         PARSE_FIELDS = 3,
         PARSE_TIMESTAMP = 4,
         PARSE_END = 5,
+        PARSE_ERR = 6,
     };
 
     enum subparse_state {
@@ -55,9 +64,20 @@ namespace LineProtocol {
         string val;
 
         for(size_t i = 0; i < data.length(); i++) {
+            /* Exit if we've encountered an error. The struct will be partially
+             * filled! */
+
+            if(state == PARSE_ERR) {
+                break;
+            }
+
             if(i+1 == data.length()) {
                 at_end = true;
             }
+
+            /* The following characters all have special meaning if they're not
+             * being escaped. Most of them are either value separators or
+             * section separators. */
 
             if(!in_escape) {
                if(data[i] == '\\') {
@@ -82,16 +102,44 @@ namespace LineProtocol {
                 state = PARSE_MEASUREMENT;
             }
 
+            /* The measurement is the initial data it needs to be non-zero
+             * length before we can progress into the next step. */
+
             if(state == PARSE_MEASUREMENT) {
+
+                /* If we encounter the , separator we move into tag parsing. */
                 if(have_sep0) {
+
+                    /* There needs to be at least one character of measurement
+                     * before we can accept tags. */
+
+                    if(!lp.measurement.length()) {
+                        state = PARSE_ERR;
+                        continue;
+                    }
+
                     state = PARSE_TAGS;
                     continue;
                 }
 
+                /* If we encounter the ' ' separator we skip over tags into
+                 * fields. */
                 if(have_sep1) {
+
+                    /* There needs to be at least one character of measurement
+                     * before we can accept fields . */
+
+                    if(!lp.measurement.length()) {
+                        state = PARSE_ERR;
+                        continue;
+                    }
+
+
                     state = PARSE_FIELDS;
                     continue;
                 }
+
+                /* Add the character to the measurement name. */
 
                 lp.measurement.push_back(data[i]);
                 continue;
@@ -193,6 +241,10 @@ namespace LineProtocol {
             }
 
             state = PARSE_END;
+        }
+
+        if(state == PARSE_ERR) {
+            return -1;
         }
 
         return 0;

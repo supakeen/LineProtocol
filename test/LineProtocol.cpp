@@ -54,3 +54,12 @@ TEST_CASE("line_protocol_parse_4") {
 
     CHECK(result == -1);
 }
+
+TEST_CASE("line_protocol_parse_5") {
+    struct line_protocol lp;
+    int result; 
+
+    result = line_protocol_parse(lp, ",bar=foo foo=bar");
+
+    CHECK(result == -1);
+}
