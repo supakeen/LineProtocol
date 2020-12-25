@@ -169,8 +169,8 @@ namespace LineProtocol {
 
                         lp.tags[key] = val;
 
-                        key.clear();
-                        val.clear();
+                        key.remove(0);
+                        val.remove(0);
 
                         substate = SUBPARSE_KEY;
 
@@ -213,8 +213,8 @@ namespace LineProtocol {
 
                         lp.fields[key] = val;
 
-                        key.clear();
-                        val.clear();
+                        key.remove(0);
+                        val.remove(0);
 
                         substate = SUBPARSE_KEY;
 

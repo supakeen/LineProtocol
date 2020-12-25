@@ -64,8 +64,6 @@ void test_line_protocol_parse_5(void) {
 }
 
 void setup() {
-    delay(2000);
-
     UNITY_BEGIN();
 
     RUN_TEST(test_line_protocol_parse_0);
@@ -78,4 +76,11 @@ void setup() {
 
 void loop() {
     UNITY_END();
+}
+
+int main() {
+    setup();
+    loop();
+
+    return 0;
 }
