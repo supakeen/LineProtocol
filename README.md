@@ -29,10 +29,20 @@ You can parse some data into a `struct line_protocol` like so:
 struct line_protocol lp;
 
 if(line_protocol_parse(&lp, "measurement,key=value key=value")) {
-  // Error :(
+    // Error :(
+    exit(1);
 }
 
-// Use `lp` here.
+lp.measurement;  // Contains the measurement name.
+
+if(lp.tags.count("room")) {  // check if a room tag was supplied
+    lp.tags["room"];  // use it
+}
+
+
+if(lp.fields.count("value")) {  // check if a value field was supplied
+    lp.fields["value"];  // use it
+}
 ```
 
 ### Formatting
