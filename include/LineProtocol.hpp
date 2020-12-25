@@ -45,10 +45,6 @@ namespace LineProtocol {
     }
 
     int line_protocol_parse(struct line_protocol &lp, String data) {
-        bool have_tags = false;
-        bool have_fields = false;
-        bool have_timestamp = false;
-
         enum parse_state state = PARSE_START;
         enum subparse_state substate = SUBPARSE_START;
 
