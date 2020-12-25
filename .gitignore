@@ -45,3 +45,5 @@ _deps
 DartConfiguration.tcl
 
 test/LineProtocolTests
+
+venv/
