@@ -9,18 +9,17 @@
 #pragma once
 
 #include <stdlib.h>
-#include <string.h>
 
-#include <map>
-#include <string>
+#include <Arduino.h>
+
 
 using namespace std;
 
 namespace LineProtocol {
     struct line_protocol {
-        string measurement;
-        map<string, string> tags;
-        map<string, string> fields;
+        String measurement;
+        map<String, String> tags;
+        map<String, String> fields;
         unsigned long long timestamp;
     };
 
@@ -41,11 +40,11 @@ namespace LineProtocol {
         SUBPARSE_END = 3,
     };
 
-    int line_protocol_format(struct line_protocol *lp, string& data) {
+    int line_protocol_format(struct line_protocol *lp, String& data) {
         return 0;
     }
 
-    int line_protocol_parse(struct line_protocol &lp, string data) {
+    int line_protocol_parse(struct line_protocol &lp, String data) {
         bool have_tags = false;
         bool have_fields = false;
         bool have_timestamp = false;
@@ -61,8 +60,8 @@ namespace LineProtocol {
 
         bool at_end = false;
 
-        string key;
-        string val;
+        String key;
+        String val;
 
         for(size_t i = 0; i < data.length(); i++) {
             /* Exit if we've encountered an error. The struct will be partially
@@ -142,7 +141,7 @@ namespace LineProtocol {
 
                 /* Add the character to the measurement name. */
 
-                lp.measurement.push_back(data[i]);
+                lp.measurement += data[i];
                 continue;
             }
 
@@ -161,14 +160,14 @@ namespace LineProtocol {
                         continue;
                     }
 
-                    key.push_back(data[i]);
+                    key += data[i];
                     continue;
                 }
 
                 if(substate == SUBPARSE_VAL) {
                     if(have_sep0 || have_sep1 || at_end) {
                         if(at_end) {
-                            val.push_back(data[i]);
+                            val += data[i];
                         }
 
                         lp.tags[key] = val;
@@ -189,7 +188,7 @@ namespace LineProtocol {
                         continue;
                     }
 
-                    val.push_back(data[i]);
+                    val += data[i];
                     continue;
                 }
             }
@@ -205,14 +204,14 @@ namespace LineProtocol {
                         continue;
                     }
 
-                    key.push_back(data[i]);
+                    key += data[i];
                     continue;
                 }
 
                 if(substate == SUBPARSE_VAL) {
                     if(have_sep0 || have_sep1 || at_end) {
                         if(at_end) {
-                            val.push_back(data[i]);
+                            val += data[i];
                         }
 
                         lp.fields[key] = val;
@@ -233,7 +232,7 @@ namespace LineProtocol {
                         continue;
                     }
 
-                    val.push_back(data[i]);
+                    val += data[i];
                     continue;
                 }
             }

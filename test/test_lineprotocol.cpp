@@ -11,7 +11,7 @@ void test_line_protocol_parse_0(void) {
     result = line_protocol_parse(lp, "measurement foo=bar");
 
     TEST_ASSERT_EQUAL(result, 0);
-    TEST_ASSERT_EQUAL("measurement", lp.measurement);
+    TEST_ASSERT_EQUAL_STRING("measurement", lp.measurement.c_str());
 }
 
 void test_line_protocol_parse_1(void) {
@@ -21,7 +21,7 @@ void test_line_protocol_parse_1(void) {
     result = line_protocol_parse(lp, "test foo=bar");
 
     TEST_ASSERT_EQUAL(result, 0);
-    TEST_ASSERT_EQUAL("test", lp.measurement);
+    TEST_ASSERT_EQUAL_STRING("test", lp.measurement.c_str());
 }
 
 void test_line_protocol_parse_2(void) {
@@ -31,9 +31,9 @@ void test_line_protocol_parse_2(void) {
     result = line_protocol_parse(lp, "test,bar=foo foo=bar");
 
     TEST_ASSERT_EQUAL(result, 0);
-    TEST_ASSERT_EQUAL("test", lp.measurement);
-    TEST_ASSERT_EQUAL("foo",  lp.tags["bar"]);
-    TEST_ASSERT_EQUAL("bar", lp.fields["foo"]);
+    TEST_ASSERT_EQUAL_STRING("test", lp.measurement.c_str());
+    TEST_ASSERT_EQUAL_STRING("foo",  lp.tags["bar"]);
+    TEST_ASSERT_EQUAL_STRING("bar", lp.fields["foo"]);
 }
 
 void test_line_protocol_parse_3(void) {
