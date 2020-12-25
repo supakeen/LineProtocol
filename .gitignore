@@ -47,3 +47,4 @@ DartConfiguration.tcl
 test/LineProtocolTests
 
 venv/
+.pio/
