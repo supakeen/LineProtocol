@@ -32,8 +32,8 @@ void test_line_protocol_parse_2(void) {
 
     TEST_ASSERT_EQUAL(result, 0);
     TEST_ASSERT_EQUAL_STRING("test", lp.measurement.c_str());
-    TEST_ASSERT_EQUAL_STRING("foo",  lp.tags["bar"]);
-    TEST_ASSERT_EQUAL_STRING("bar", lp.fields["foo"]);
+    TEST_ASSERT_EQUAL_STRING("foo",  lp.tags["bar"].c_str());
+    TEST_ASSERT_EQUAL_STRING("bar", lp.fields["foo"].c_str());
 }
 
 void test_line_protocol_parse_3(void) {
@@ -74,6 +74,8 @@ void setup() {
     RUN_TEST(test_line_protocol_parse_3);
     RUN_TEST(test_line_protocol_parse_4);
     RUN_TEST(test_line_protocol_parse_5);
+}
 
+void loop() {
     UNITY_END();
 }

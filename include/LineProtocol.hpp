@@ -12,14 +12,15 @@
 
 #include <Arduino.h>
 
+#include <map>
 
 using namespace std;
 
 namespace LineProtocol {
     struct line_protocol {
         String measurement;
-        map<String, String> tags;
-        map<String, String> fields;
+        std::map<String, String> tags;
+        std::map<String, String> fields;
         unsigned long long timestamp;
     };
 
