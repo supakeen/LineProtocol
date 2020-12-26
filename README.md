@@ -39,7 +39,8 @@ onto a stable release cycle:
 ### Installation
 
 `LineProtocol` is listed as an installable package on the PlatformIO registry,
-you can add `LineProtocol` to your `lib_deps` in `platformio.ini` to use it.
+you can add `supakeen/LineProtocol` to your `lib_deps` in `platformio.ini` to
+use it.
 
 ### Parsing
 
