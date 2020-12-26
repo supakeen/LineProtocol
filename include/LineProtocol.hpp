@@ -50,7 +50,6 @@ namespace LineProtocol {
         enum subparse_state substate = SUBPARSE_START;
 
         bool in_escape = false;
-        bool in_quotes = false;
 
         bool have_sep0 = false;
         bool have_sep1 = false;
