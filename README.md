@@ -17,6 +17,17 @@ allows you to add display boards without writing custom code to understand the
 formats you have for each board and to circumvent the step of writing custom code
 to reformat boards into the way you like it.
 
+## In Development
+
+This library is still in development hence the `0.x` version scheme. The
+following important items still need to be completed before this can move
+onto a stable release cycle:
+
+- [ ] Format messages.
+- [ ] Support quotes in measurement, tags, and keys.
+- [ ] Support parsing the timestamp.
+- [ ] Take another look at using exceptions but at the minimum sane errors.
+
 ## Usage
 
 ### Parsing
