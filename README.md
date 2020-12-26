@@ -3,6 +3,11 @@
 This is a small header-only Arduino/C++ library to format or parse data in the [InfluxDB Line Protocol](https://docs.influxdata.com/influxdb/v2.0/reference/syntax/line-protocol/).
 The build system used is platformio.
 
+Code in `LineProtocol` is written to be readable as opposed to optimal
+performance wise. If you encounter situations where performance is
+an issue, or if you encounter what you feel to be bugs then please file
+a ticket at the [LineProtocol repository](https://github.com/wormouth/LineProtocol).
+
 ## Format
 
 The InfluxDB Line Protocol looks like this:
