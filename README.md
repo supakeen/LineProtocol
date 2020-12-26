@@ -27,6 +27,7 @@ onto a stable release cycle:
 - [ ] Support quotes in measurement, tags, and keys.
 - [ ] Support parsing the timestamp.
 - [ ] Take another look at using exceptions but at the minimum sane errors.
+- [x] Run tests natively with `FakeArduino`.
 
 ## Usage
 
@@ -83,5 +84,10 @@ pio test -e esp32
 ```
 
 Which will upload firmware and run tests while fetching the results remotely.
-I'm working on providing native tests for CI as well, but for that I have to
-struggle some more with `String` types.
+Tests can also be ran natively with:
+
+```
+pio test -e native
+```
+
+Which doesn't require you to connect a board.
