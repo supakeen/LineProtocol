@@ -36,6 +36,11 @@ onto a stable release cycle:
 
 ## Usage
 
+### Installation
+
+`LineProtocol` is listed as an installable package on the PlatformIO registry,
+you can add `LineProtocol` to your `lib_deps` in `platformio.ini` to use it.
+
 ### Parsing
 
 You can parse some data into a `struct line_protocol` like so:
