@@ -13,6 +13,7 @@
 #include <Arduino.h>
 
 #include <map>
+#include <list>
 
 using namespace std;
 
@@ -42,6 +43,30 @@ namespace LineProtocol {
     };
 
     int line_protocol_format(struct line_protocol *lp, String& data) {
+        return 0;
+    }
+
+
+    int line_protocol_validate(struct line_protocol &lp, std::list<String> tags, std::list<String> fields) {
+        for(auto tag: tags) {
+            if(!lp.tags.count(tag)) {
+                cout << "Missing tag ";
+                cout << tag.c_str();
+                cout << "\n";
+                return 1;
+            }
+        }
+
+        for(auto field: fields) {
+            if(!lp.fields.count(field)) {
+                cout << "Missing field ";
+                cout << field.c_str();
+                cout << "\n";
+
+                return 1;
+            }
+        }
+
         return 0;
     }
 

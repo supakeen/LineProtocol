@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.0
+
+* Add a `line_protocol_validate` function to validate keys and/or fields being
+  available in the message.
+
 ## 0.1.1
 
 Provide a direct `LineProtocol.h` so this can be used from within a `lib`
