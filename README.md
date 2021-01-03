@@ -51,7 +51,7 @@ You can parse some data into a `struct line_protocol` like so:
 
 struct line_protocol lp;
 
-if(line_protocol_parse(&lp, "measurement,key=value key=value")) {
+if(line_protocol_parse(lp, "measurement,key=value key=value")) {
     // Error :(
     exit(1);
 }
