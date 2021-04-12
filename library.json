@@ -1,12 +1,12 @@
 {
     "name": "LineProtocol",
-    "version": "0.2.1",
+    "version": "0.2.2",
     "keywords": "lineprotocol, influxdb",
     "description": "Library to format or parse data in the InfluxDB line protocol.",
     "authors": [
         { "name": "supakeen", "url": "https://supakeen.com/" }
     ],
-    "repository": { "type": "git", "url": "https://github.com/wormouth/LineProtocol" },
+    "repository": { "type": "git", "url": "https://github.com/PubliekProject/LineProtocol" },
     "frameworks": "arduino",
     "platforms": "*"
 }
