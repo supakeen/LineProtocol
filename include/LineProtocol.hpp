@@ -64,10 +64,6 @@ public:
     String val;
 
     for (size_t i = 0; i < data.length(); i++) {
-      if (state == PARSE_ERR) {
-        break;
-      }
-
       if (i + 1 == data.length()) {
         at_end = true;
       }
@@ -130,9 +126,9 @@ public:
 
         measurement += data[i];
         continue;
-      }
 
-      if (state == PARSE_TAGS) {
+      } else if (state == PARSE_TAGS) {
+
         if (substate == SUBPARSE_START) {
           substate = SUBPARSE_KEY;
         }
@@ -149,9 +145,7 @@ public:
 
           key += data[i];
           continue;
-        }
-
-        if (substate == SUBPARSE_VAL) {
+        } else if (substate == SUBPARSE_VAL) {
           if (have_comma || have_space || at_end) {
             if (at_end) {
               val += data[i];
@@ -178,9 +172,7 @@ public:
           val += data[i];
           continue;
         }
-      }
-
-      if (state == PARSE_FIELDS) {
+      } else if (state == PARSE_FIELDS) {
         if (substate == SUBPARSE_KEY) {
           if (have_comma || have_space || at_end) {
             throw "Error";
@@ -193,9 +185,7 @@ public:
 
           key += data[i];
           continue;
-        }
-
-        if (substate == SUBPARSE_VAL) {
+        } else if (substate == SUBPARSE_VAL) {
           if (have_comma || have_space || at_end) {
             if (at_end) {
               val += data[i];
@@ -222,16 +212,12 @@ public:
           val += data[i];
           continue;
         }
+      } else if (state == PARSE_TIMESTAMP) {
+      } else if (state == PARSE_ERR) {
+        throw "Error";
+      } else {
+        throw "Error";
       }
-
-      if (state == PARSE_TIMESTAMP) {
-      }
-
-      state = PARSE_END;
-    }
-
-    if (state == PARSE_ERR) {
-      throw "Error";
     }
   };
 
