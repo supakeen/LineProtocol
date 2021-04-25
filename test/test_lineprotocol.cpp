@@ -8,7 +8,7 @@ void test_message_from_arguments_0(void) {
 
   std::map<String, String> tags = {{"tag", "tag"}};
 
-  Message message("measurement", fields, tags, 3);
+  Message message{"measurement", fields, tags, 3};
 
   TEST_ASSERT_EQUAL_STRING(message.measurement.c_str(), "measurement");
   TEST_ASSERT_EQUAL_STRING(message.fields["field"].c_str(), "field");
@@ -17,13 +17,13 @@ void test_message_from_arguments_0(void) {
 }
 
 void test_message_from_string_0(void) {
-  Message message("measurement foo=bar");
+  Message message{"measurement foo=bar"};
 
   TEST_ASSERT_EQUAL_STRING(message.measurement.c_str(), "measurement");
 }
 
 void test_message_from_string_1(void) {
-  Message message("test,bar=foo foo=bar");
+  Message message{"test,bar=foo foo=bar"};
 
   TEST_ASSERT_EQUAL_STRING(message.measurement.c_str(), "test");
   TEST_ASSERT_EQUAL_STRING(message.tags["bar"].c_str(), "foo");
@@ -32,7 +32,7 @@ void test_message_from_string_1(void) {
 
 void test_message_from_string_2(void) {
   try {
-    Message message("test,bar= foo foo=bar");
+    Message message{"test,bar= foo foo=bar"};
     TEST_FAIL();
   } catch (...) {
   };
@@ -40,7 +40,7 @@ void test_message_from_string_2(void) {
 
 void test_message_from_string_3(void) {
   try {
-    Message message("test,bar=foo fo o=bar");
+    Message message{"test,bar=foo fo o=bar"};
     TEST_FAIL();
   } catch (...) {
   };
@@ -48,14 +48,14 @@ void test_message_from_string_3(void) {
 
 void test_message_from_string_4(void) {
   try {
-    Message message(",bar=foo foo=bar");
+    Message message{",bar=foo foo=bar"};
     TEST_FAIL();
   } catch (...) {
   };
 }
 
 void test_message_validate_0(void) {
-  Message message("test,bar=foo foo=bar");
+  Message message{"test,bar=foo foo=bar"};
 
   TEST_ASSERT_EQUAL(0, message.validate({"bar"}, {"foo"}));
   TEST_ASSERT_EQUAL(1, message.validate({"foo"}, {"bar"}));
