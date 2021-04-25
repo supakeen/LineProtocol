@@ -55,8 +55,8 @@ public:
 
     bool in_escape = false;
 
-    bool have_sep0 = false;
-    bool have_sep1 = false;
+    bool have_comma = false;
+    bool have_space = false;
 
     bool at_end = false;
 
@@ -82,17 +82,8 @@ public:
           continue;
         }
 
-        if (data[i] == ',') {
-          have_sep0 = true;
-        } else {
-          have_sep0 = false;
-        }
-
-        if (data[i] == ' ') {
-          have_sep1 = true;
-        } else {
-          have_sep1 = false;
-        }
+        have_comma = data[i] == ',';
+        have_space = data[i] == ' ';
       }
 
       if (state == PARSE_START) {
@@ -105,7 +96,7 @@ public:
       if (state == PARSE_MEASUREMENT) {
 
         /* If we encounter the , separator we move into tag parsing. */
-        if (have_sep0) {
+        if (have_comma) {
 
           /* There needs to be at least one character of measurement
            * before we can accept tags. */
@@ -121,7 +112,7 @@ public:
 
         /* If we encounter the ' ' separator we skip over tags into
          * fields. */
-        if (have_sep1) {
+        if (have_space) {
 
           /* There needs to be at least one character of measurement
            * before we can accept fields . */
@@ -147,7 +138,7 @@ public:
         }
 
         if (substate == SUBPARSE_KEY) {
-          if (have_sep0 || have_sep1 || at_end) {
+          if (have_comma || have_space || at_end) {
             throw "Error";
           }
 
@@ -161,7 +152,7 @@ public:
         }
 
         if (substate == SUBPARSE_VAL) {
-          if (have_sep0 || have_sep1 || at_end) {
+          if (have_comma || have_space || at_end) {
             if (at_end) {
               val += data[i];
             }
@@ -173,7 +164,7 @@ public:
 
             substate = SUBPARSE_KEY;
 
-            if (have_sep1) {
+            if (have_space) {
               state = PARSE_FIELDS;
             }
 
@@ -191,7 +182,7 @@ public:
 
       if (state == PARSE_FIELDS) {
         if (substate == SUBPARSE_KEY) {
-          if (have_sep0 || have_sep1 || at_end) {
+          if (have_comma || have_space || at_end) {
             throw "Error";
           }
 
@@ -205,7 +196,7 @@ public:
         }
 
         if (substate == SUBPARSE_VAL) {
-          if (have_sep0 || have_sep1 || at_end) {
+          if (have_comma || have_space || at_end) {
             if (at_end) {
               val += data[i];
             }
@@ -217,7 +208,7 @@ public:
 
             substate = SUBPARSE_KEY;
 
-            if (have_sep1) {
+            if (have_space) {
               state = PARSE_TIMESTAMP;
             }
 
