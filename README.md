@@ -69,8 +69,6 @@ if(message.fields.count("value")) {  // check if a value field was supplied
 
 Unsupported in `0.3.0` but the next feature on the list.
 
-```
-
 ## Testing
 
 To test the library make sure you connect an `esp32` board then run:
