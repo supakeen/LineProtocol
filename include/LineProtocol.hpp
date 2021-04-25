@@ -44,14 +44,10 @@ public:
   std::map<String, String> fields;
   unsigned long long timestamp;
 
-  Message(String measurement_argument, std::map<String, String> fields_argument,
-          std::map<String, String> tags_argument,
-          unsigned long long timestamp_argument) {
-    measurement = measurement_argument;
-    fields = fields_argument;
-    tags = tags_argument;
-    timestamp = timestamp_argument;
-  };
+  Message(String measurement, std::map<String, String> fields,
+          std::map<String, String> tags, unsigned long long timestamp)
+      : measurement(measurement), fields(fields), tags(tags),
+        timestamp(timestamp){};
 
   Message(String data) {
     enum parse_state state = PARSE_START;
