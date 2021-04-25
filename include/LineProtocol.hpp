@@ -82,9 +82,8 @@ public:
         have_space = data[i] == ' ';
       }
 
-      if (state == PARSE_START) {
+      if (state == PARSE_START)
         state = PARSE_MEASUREMENT;
-      }
 
       /* The measurement is the initial data it needs to be non-zero
        * length before we can progress into the next step. */
@@ -128,10 +127,8 @@ public:
         continue;
 
       } else if (state == PARSE_TAGS) {
-
-        if (substate == SUBPARSE_START) {
+        if (substate == SUBPARSE_START)
           substate = SUBPARSE_KEY;
-        }
 
         if (substate == SUBPARSE_KEY) {
           if (have_comma || have_space || at_end) {
@@ -147,24 +144,20 @@ public:
           continue;
         } else if (substate == SUBPARSE_VAL) {
           if (have_comma || have_space || at_end) {
-            if (at_end) {
+            if (at_end)
               val += data[i];
-            }
 
             tags[key] = val;
 
             key.remove(0);
             val.remove(0);
 
-            substate = SUBPARSE_KEY;
-
-            if (have_space) {
+            if (have_space)
               state = PARSE_FIELDS;
-            }
-
-            if (at_end) {
+            if (at_end)
               state = PARSE_END;
-            }
+
+            substate = SUBPARSE_KEY;
 
             continue;
           }
@@ -187,24 +180,20 @@ public:
           continue;
         } else if (substate == SUBPARSE_VAL) {
           if (have_comma || have_space || at_end) {
-            if (at_end) {
+            if (at_end)
               val += data[i];
-            }
 
             fields[key] = val;
 
             key.remove(0);
             val.remove(0);
 
-            substate = SUBPARSE_KEY;
-
-            if (have_space) {
+            if (have_space)
               state = PARSE_TIMESTAMP;
-            }
-
-            if (at_end) {
+            if (at_end)
               state = PARSE_END;
-            }
+
+            substate = SUBPARSE_KEY;
 
             continue;
           }
