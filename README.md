@@ -49,40 +49,25 @@ You can parse some data into a `struct line_protocol` like so:
 ```cpp
 #include <LineProtocol.h>
 
-struct line_protocol lp;
+try {
+  LineProtocol::Message message("measurement,key=value key=value");
+} catch (...) { }
 
-if(line_protocol_parse(lp, "measurement,key=value key=value")) {
-    // Error :(
-    exit(1);
-}
+message.measurement;  // Contains the measurement name.
 
-lp.measurement;  // Contains the measurement name.
-
-if(lp.tags.count("room")) {  // check if a room tag was supplied
-    lp.tags["room"];  // use it
+if(message.tags.count("room")) {  // check if a room tag was supplied
+  message.tags["room"];  // use it
 }
 
 
-if(lp.fields.count("value")) {  // check if a value field was supplied
-    lp.fields["value"];  // use it
+if(message.fields.count("value")) {  // check if a value field was supplied
+  message.fields["value"];  // use it
 }
 ```
 
 ### Formatting
 
-Unsupported in `0.1.0` but the next feature on the list.
-
-### The struct
-
-`LineProtocol` uses the `struct line_protocol`, its layout is as follows:
-
-```cpp
-struct line_protocol {
-    String measurement;
-    map<String, String> tags;
-    map<String, String> fields;
-    unsigned long long timestamp;
-};
+Unsupported in `0.3.0` but the next feature on the list.
 
 ```
 
